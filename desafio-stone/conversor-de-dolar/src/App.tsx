@@ -6,6 +6,8 @@ import InputTaxaEstado from './components/InputTaxaEstado';
 import SelectFormaPagamento from './components/SelectFormaPagamento';
 import BotaoConversao from './components/BotaoConversao';
 import { useCurrencyConverter } from './hooks/useCurrencyConverter';
+import { useEffect } from 'react';
+
 
 const App: React.FC = () => {
   const {
@@ -25,13 +27,14 @@ const App: React.FC = () => {
 
   const [showResults, setShowResults] = useState<boolean>(false);
   const [convertedValue, setConvertedValue] = useState<number | null>(null);
+  const [exchangeTaxRate, setExchangeTaxRate] = useState<number | null>(null);
 
   const handleConvert = async () => {
-    await convertCurrency();
-    const newExchangeRate = exchangeRate || 0;
-    const converted = inputValue * newExchangeRate * (1 + taxValue / 100);
+    const { newExchangeRate, converted }: any = await convertCurrency();
     setConvertedValue(converted);
+    setExchangeTaxRate(newExchangeRate)
     setShowResults(true);
+    console.log('kkkkkkkkk',)
   };
 
   const handleBack = () => {
@@ -64,13 +67,13 @@ const App: React.FC = () => {
           <p>
             O resultado do cálculo é: R${convertedValue}
             <br />
-            Compra no {paymentMethod} e taxa de {inputValue} dólar com cotação do dólar a {exchangeRate}.
+            Compra no {paymentMethod} e taxa de {inputValue} dólar com cotação do dólar a {exchangeTaxRate}.
           </p>
         </>
       )}
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      {exchangeRate && <p>Cotação do dólar: $1,00 = R${exchangeRate}</p>}
+      {exchangeTaxRate && <p>Cotação do dólar: $1,00 = R${exchangeTaxRate}</p>}
     </div>
   );
 };

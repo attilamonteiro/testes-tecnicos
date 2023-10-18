@@ -64,6 +64,7 @@ export const useCurrencyConverter = () => {
     setTaxValue,
     paymentMethod,
     setPaymentMethod,
-    convertedValue, // Add this line
+    convertedValue,
+    
   };
 };
